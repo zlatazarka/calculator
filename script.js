@@ -87,24 +87,29 @@ function resetPercent() {
 
 // Выбор операции
 function selectOperation(symbol, operationFunc) {
-    currentOperation = operationFunc;
-    errorMessage.textContent = "";
-    resultDisplay.textContent = "";
+    selectedOperation = operationFunc;
+    errorMessage.textContent = ""; // Очистка ошибок
+    resultDisplay.textContent = ""; // Очистка результата
 
-    if (symbol === "√") {
-        resetPercent();
+    // Если выбран корень, скрываем второе поле
+    if (symbol === '√') {
         inputB.style.display = "none";
         inputB.value = "";
     } else {
         inputB.style.display = "inline-block";
     }
 
-    operationSymbol.textContent = symbol;
-    if (activeButton) activeButton.classList.remove("active");
-    event.target.classList.add("active");
-    activeButton = event.target;
+    // Обновление текста операции на экране
+    resultDisplay.textContent = symbol;
 
-    updatePercentButtonState();
+    // Если была активная кнопка, снимаем активный класс
+    if (activeButton) activeButton.classList.remove("active");
+
+    // Применяем активный класс к кнопке, которая была нажата
+    activeButton = document.querySelector(`button[data-op="${symbol}"]`);
+    if (activeButton) activeButton.classList.add("active");
+    
+    togglePercent(); // Обновляем состояние кнопки процента
 }
 
 // Выполнение вычисления при нажатии "="
@@ -144,7 +149,7 @@ function togglePercent() {
         percentButton.style.backgroundColor = "";
     } else {
         inputB.value = inputB.value + '%';
-        percentButton.style.backgroundColor = "green";
+        percentButton.style.backgroundColor = "#24635C";
         isPercentEnabled = true;
     }
 
@@ -197,7 +202,7 @@ function clearAll() {
     inputA.value = "";
     inputB.value = "";
     resultDisplay.textContent = "0";
-    operationSymbol.textContent = "?";
+    operationSymbol.textContent = " ";
     errorMessage.textContent = "";
 
     if (activeButton) activeButton.classList.remove("active");
